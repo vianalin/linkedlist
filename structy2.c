@@ -27,7 +27,7 @@ void print_list(struct order *o) {
 }
 
 struct order * insert_front(struct order * current, char * food, double price) {
-	struct order *addon = malloc(sizeof(struct order));
+	struct order *addon = malloc(sizeof(struct current));
 	strcpy(addon->food, food);
 	addon->price = price;
 	addon->next = next;
@@ -44,15 +44,20 @@ struct order * free_list(struct order * current) {
 	return current;
 }
 	
-struct order * remove_node(struct order * current, double price) {
-	struct order * start = current;
-	struct order * temp;
+struct order * remove_node(struct order * front, char * food, double price) {
+	struct order * start = front;
+	struct order * temp = front->next;
 	
-	if(current->price == price) {
-		temp = current->next;
-		free(current);
-		return temp;
+	if(start->food != food || start->price != price) return front;
+	while(temp) {
+		if(temp->food != food || temp->price != price) {
+			front->next = temp->next;
+			break;
+		}
+	front = temp;
+	temp = temp->next;
 	}
+	return start;	
 }
 	
 	
